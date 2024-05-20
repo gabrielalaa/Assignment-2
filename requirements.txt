@@ -1,5 +1,5 @@
 flask
 flask-restx
 pytest
-# sqlalchemy
+sqlalchemy
 # tcp socket
