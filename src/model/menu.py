@@ -5,3 +5,8 @@ class Menu(object):
         self.price: float = price
         self.category: str = category
         self.quantity: int = quantity
+
+# TODO:
+#  interactions between the employee and the menu: add, remove, update products
+#  interactions between the customer and the menu when ORDERING
+
