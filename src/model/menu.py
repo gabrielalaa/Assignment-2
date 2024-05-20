@@ -10,3 +10,5 @@ class Menu(object):
 #  interactions between the employee and the menu: add, remove, update products
 #  interactions between the customer and the menu when ORDERING
 
+# TODO:
+#  error handling for: price <= 0; quantity < 0
