@@ -14,3 +14,6 @@ class Order(object):
 
 # TODO: make the order as a customer (add items to order, remove items from order)
 #  update the status
+
+# TODO:
+#  an order cannot be made without any product in order_content
