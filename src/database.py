@@ -1,67 +1,38 @@
-# MODEL 1
-# # complete it !
-#
-# from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Float
-#
-# engine = create_engine('sqlite://mydb1.db', echo=True)
-#
-# meta = MetaData()
-#
-# employees = Table(
-#     'employees', meta,
-#     Column('id', Integer, primary_key=True), Column('name', String),
-#     Column('salary', Float), Column('position', String), Column('hiredate', String),
-# )
-#
-# insert_statement = employees.insert().values(name='John', salary='12939')
-#
-# connection = engine.connect()
-#
-# connection.execute(insert_statement)
-#
-#
-# s = employees.select()
-# result = connection.execute(s)
-#
-# for row in result:
-#     print(row)
-#
-# meta.create_all(engine)
+from sqlalchemy import Column, Integer, String, Float, Boolean, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
 
 
-# MODEL 2
-# from sqlalchemy import Column, Integer, String, Float, create_engine
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import sessionmaker
+# Define "Menu" using SQLAlchemy's ORM to map it to a database table
+class Menu(Base):
+    __tablename__ = 'products'
+
+    # As a primary key, use the ID
+    product_id = Column(Integer, primary_key=True)
+    name = Column(String)
+    price = Column(Float)
+    category = Column(String)
+    quantity = Column(Integer)
+    availability_status = Column(Boolean)
+
+
+# Set up the engine to my SQLite database
+engine = create_engine('sqlite:///menu.db', echo=True)
+Base.metadata.create_all(engine)
+
+# Set up a session maker to handle transactions
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# # Add some entries to the database to check it
+# # Create a new menu product
+# menu_product = Menu(product_id=1, name="Cheeseburger", price=2.99, category="Burgers", quantity=100, availability_status=True)
 #
-# Base = declarative_base()
+# # Add the new product to the session
+# session.add(menu_product)
 #
-#
-# class Employee(Base):
-#     __tablename__ = 'employees'
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String)
-#     salary = Column(Float)
-#     email = Column(String)
-#
-#     def __init__(self):
-#         pass
-#
-#
-# engine = create_engine('sqlite:///mybd2.db', echo=True)
-#
-# Base.metadata.create_all(engine)
-#
-# SessionClass = sessionmaker(bind=engine)
-# session = SessionClass()
-#
-# e1 = Employee()
-# e2 = Employee()
-#
-# e1.email = 'happy@gmail.com'
-# e2.email = 'sad@gmail.com'
-#
-# session.add(e1)
-# session.add(e2)
-#
+# # Commit the transaction
 # session.commit()
+
