@@ -53,7 +53,8 @@ class Employee_db(Base):
     employee_id = Column(Integer, primary_key=True)
     employee_name = Column(String)
     employee_age = Column(Integer)
-
+    employee_gender = Column(Enum('female', 'male', 'other', 'unspecified'), name='gender_types')
+    salary = Column(Float)
 
 #######################################
 
