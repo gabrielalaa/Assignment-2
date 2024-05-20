@@ -45,7 +45,6 @@ class Order_db(Base):
 
 #######################################
 
-
 # Define "Employee_db" using SQLAlchemy's ORM to map it to a database table
 class Employee_db(Base):
     __tablename__ = 'employees'
@@ -58,6 +57,7 @@ class Employee_db(Base):
 
 #######################################
 
+
 # Define "Customer_db" using SQLAlchemy's ORM to map it to a database table
 class Customer_db(Base):
     __tablename__ = 'customers'
@@ -65,8 +65,9 @@ class Customer_db(Base):
     customer_id = Column(Integer, primary_key=True)
     customer_name = Column(String)
     customer_age = Column(Integer)
-    customer_gender = Column(String)
+    customer_gender = Column(Enum('female', 'male', 'other', 'unspecified'), name='gender_types')
     customer_address = Column(String)
+    balance = Column(Float)
 
     # Relationship
     orders = relationship("Order_db", back_populates="customer")
