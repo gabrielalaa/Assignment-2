@@ -1,4 +1,3 @@
-# TODO list
 from typing import List
 from .menu import Menu
 
@@ -12,3 +11,6 @@ class Order(object):
 
     def set_customer(self, customer_id: int):
         self.customer_id = customer_id
+
+# TODO: make the order as a customer (add items to order, remove items from order)
+#  update the status
