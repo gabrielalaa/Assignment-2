@@ -4,10 +4,11 @@ from .menu import Menu
 
 
 class Order(object):
-    # TODO:
-    # F - not delivered; T - delivered or vice versa
-    # or make it a string
-    def __init__(self, order_id: int, order_status: bool = False):
+    def __init__(self, order_id: int, order_status: str = "pending", customer_id: int = None):
         self.order_id: int = order_id
-        self.order_status: bool = order_status
+        self.order_status: str = order_status
         self.order_content: List[Menu] = []
+        self.customer_id: int = customer_id
+
+    def set_customer(self, customer_id: int):
+        self.customer_id = customer_id
