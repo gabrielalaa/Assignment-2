@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, create_engine, Table, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, create_engine, Table, ForeignKey, Enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from typing import List
 
 Base = declarative_base()
 
@@ -14,9 +13,9 @@ class Menu_db(Base):
     product_id = Column(Integer, primary_key=True)
     name = Column(String)
     price = Column(Float)
-    category = Column(String)
+    # I want to fix some simple categories to make the navigation as a user much easier and logical
+    category = Column(Enum("Burgers", "Fries", "Salads", "Drinks", "Desserts", name="menu_categories"))
     quantity = Column(Integer)
-    availability_status = Column(Boolean)
 
 
 #######################################
@@ -37,7 +36,7 @@ class Order_db(Base):
     # Use a foreign key to link two tables together
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
 
-    # Create relationships to define hpw different tables are connected
+    # Create relationships to define how different tables are connected
     # back_populates is used to create a bidirectional relationship
     # secondary is used to define a many-to-many relationship
     customer = relationship("Customer_db", back_populates="orders")
@@ -80,7 +79,7 @@ Base.metadata.create_all(engine)
 
 # Set up a session maker to handle transactions
 Session = sessionmaker(bind=engine)
-# session = Session()
+session = Session()
 
 
 # # Add some entries to the database to check it
