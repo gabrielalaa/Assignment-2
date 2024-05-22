@@ -1,34 +1,29 @@
-# from typing import List, Union, Optional
-#
-# from .issue import Issue
-# from .newspaper import Newspaper
-# from .subscriber import Subscriber
-# from .editor import Editor
-#
-# import random
-#
-#
-# class Agency(object):
-#     singleton_instance = None
-#
-#     def __init__(self):
-#         self.newspapers: List[Newspaper] = []
-#         self.subscribers: List[Subscriber] = []
-#         self.editors: List[Editor] = []
-#
-#     # This ensures that only one instance of 'Agency' exists (Singleton pattern)
-#     @staticmethod
-#     def get_instance():
-#         if Agency.singleton_instance is None:
-#             Agency.singleton_instance = Agency()
-#
-#         return Agency.singleton_instance
-#
-#     def add_newspaper(self, new_paper: Newspaper):
-#         # Assert that ID does not exist
-#         if any(new_paper.paper_id == paper.paper_id for paper in self.newspapers):
-#             raise ValueError(f"A newspaper with ID {new_paper.paper_id} already exists!")
-#         self.newspapers.append(new_paper)
+from . database import Session, Menu_db, Order_db, Customer_db, Employee_db
+
+from .menu import Menu
+from .order import Order
+from .customer import Customer
+from .employee import Employee
+
+
+# First of all, I need to have customers and employees in my system
+# METHODS for customer
+def add_customer(customer_data):
+    # Use the session to commit changes to my database
+    # Create a new session instance:
+    session = Session()
+    # Include error handling
+    # Create the new_customer, extracting his/her data
+    new_customer = Customer(**customer_data)
+    # Assert that ID does not exist
+    if any(new_customer.customer_id == customer.customer_id for customer in session.query(Customer).all()):
+        raise ValueError(f"A customer with ID {new_customer.customer_id} already exists!")
+    # Add the new_customer to the database
+    session.add(new_customer)
+
+
+
+
 #
 #     def get_newspaper(self, paper_id: Union[int, str]) -> Optional[Newspaper]:
 #         for paper in self.newspapers:
