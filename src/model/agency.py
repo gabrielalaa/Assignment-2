@@ -9,18 +9,22 @@ from . database import Session, Menu_db, Order_db, Customer_db, Employee_db
 # First of all, I need to have customers and employees in my system
 # METHODS for customer
 def add_customer(customer_data):
-    # Use the session to commit changes to my database
+    # Use the session to commit and access data
     # Create a new session instance:
     session = Session()
     # Include error handling
     try:
+        # Assert that ID does not exist using filter().first()
+        # which returns the first matched instance without loading other data
+        existing_customer = session.query(Customer_db).filter(Customer_db.customer_id == customer_data['customer_id']).first()
+        if existing_customer:
+            raise ValueError(f"A customer with ID {customer_data['customer_id']} already exists!")
+
         # Create the new_customer, extracting his/her data
         new_customer = Customer_db(**customer_data)
-        # Assert that ID does not exist
-        if any(new_customer.customer_id == customer.customer_id for customer in session.query(Customer_db).all()):
-            raise ValueError(f"A customer with ID {new_customer.customer_id} already exists!")
         # Add the new_customer to the database
         session.add(new_customer)
+        # Commit the changes
         session.commit()
         return new_customer
     except Exception as e:
@@ -31,9 +35,6 @@ def add_customer(customer_data):
         # In any situation, make sure to close the session:
         session.close()
 
-
-
-#
 #     def get_newspaper(self, paper_id: Union[int, str]) -> Optional[Newspaper]:
 #         for paper in self.newspapers:
 #             if paper.paper_id == paper_id:
