@@ -1,9 +1,9 @@
 from . database import Session, Menu_db, Order_db, Customer_db, Employee_db
 
-from .menu import Menu
-from .order import Order
-from .customer import Customer
-from .employee import Employee
+# from .menu import Menu
+# from .order import Order
+# from .customer import Customer
+# from .employee import Employee
 
 
 # First of all, I need to have customers and employees in my system
@@ -13,14 +13,23 @@ def add_customer(customer_data):
     # Create a new session instance:
     session = Session()
     # Include error handling
-    # Create the new_customer, extracting his/her data
-    new_customer = Customer(**customer_data)
-    # Assert that ID does not exist
-    if any(new_customer.customer_id == customer.customer_id for customer in session.query(Customer).all()):
-        raise ValueError(f"A customer with ID {new_customer.customer_id} already exists!")
-    # Add the new_customer to the database
-    session.add(new_customer)
-
+    try:
+        # Create the new_customer, extracting his/her data
+        new_customer = Customer_db(**customer_data)
+        # Assert that ID does not exist
+        if any(new_customer.customer_id == customer.customer_id for customer in session.query(Customer_db).all()):
+            raise ValueError(f"A customer with ID {new_customer.customer_id} already exists!")
+        # Add the new_customer to the database
+        session.add(new_customer)
+        session.commit()
+        return new_customer
+    except Exception as e:
+        # If any operation fails, use "rollback()" to ensure that none of the changes take effect
+        session.rollback()
+        raise ValueError(f"An error occurred while adding the customer: {str(e)}")
+    finally:
+        # In any situation, make sure to close the session:
+        session.close()
 
 
 
