@@ -4,12 +4,12 @@ from flask_restx import Api
 
 # from .api.menuNS import menu_ns
 # from .api.orderNS import order_ns
-# from .api.customerNS import customer_ns
+from .api.customerNS import customer_ns
 # from .api.employeeNS import employee_ns
 
-# from .model.agency import Agency
+from .model.agency import Agency
 
-# agency = Agency()
+agency = Agency()
 
 
 def create_app():
@@ -20,7 +20,7 @@ def create_app():
     # add individual namespaces
     # paperroute_api.add_namespace(menu_ns)
     # paperroute_api.add_namespace(order_ns)
-    # paperroute_api.add_namespace(customer_ns)
+    paperroute_api.add_namespace(customer_ns)
     # paperroute_api.add_namespace(employee_ns)
 
     return paperroute_app
