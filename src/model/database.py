@@ -44,17 +44,17 @@ Base = declarative_base()
 #
 #
 # #######################################
-#
-# # Define "Employee_db" using SQLAlchemy's ORM to map it to a database table
-# class Employee_db(Base):
-#     __tablename__ = 'employees'
-#
-#     employee_id = Column(Integer, primary_key=True)
-#     employee_name = Column(String)
-#     employee_age = Column(Integer)
-#     employee_gender = Column(Enum('female', 'male', 'other', 'unspecified'), name='gender_types')
-#     salary = Column(Float)
-#
+
+# Define "Employee_db" using SQLAlchemy's ORM to map it to a database table
+class Employee_db(Base):
+    __tablename__ = 'employees'
+
+    employee_id = Column(Integer, primary_key=True)
+    employee_name = Column(String)
+    employee_age = Column(Integer)
+    employee_gender = Column(Enum('female', 'male', 'other', 'unspecified'), name='gender_types')
+    salary = Column(Float)
+
 #######################################
 
 
