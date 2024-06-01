@@ -16,6 +16,12 @@ class Agency:
     def add_customer(self, customer_data):
         # Include error handling
         try:
+            # Ensure that gender is correctly written
+            valid_genders = {'female', 'male', 'other', 'unspecified'}
+            customer_gender = customer_data['customer_gender']
+            if customer_gender not in valid_genders:
+                raise ValueError(f"Invalid gender {customer_gender}. Try: {valid_genders}")
+
             # Assert that ID does not exist using filter_by().first()
             # which returns the first matched instance without loading other data
             existing_customer = self.session.query(Customer_db).filter_by(
@@ -82,7 +88,6 @@ class Agency:
             self.session.close()
 
     # TODO: update_customer
-    #  try to figure it out the error: when I try to add a person with a wrong gender -> then try to get them all
 
     # METHODS for employee
     def add_employee(self, employee_data):
