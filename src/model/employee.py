@@ -9,6 +9,5 @@ class Employee(object):
 # TODO:
 #  to work you should have the age of 16+ <= 50
 #  salary > 0
-#  add, remove, update employees from the system
 #  maybe make a statistics based on age/gender/salary
 #  or some additional things about the salary
