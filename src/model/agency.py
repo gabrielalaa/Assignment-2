@@ -87,7 +87,33 @@ class Agency:
             # Make sure to close the session:
             self.session.close()
 
-    # TODO: update_customer
+    def update_customer(self, customer_id, new_data):
+        try:
+            find_customer = self.session.query(Customer_db).filter_by(customer_id=customer_id).first()
+            if not find_customer:
+                raise ValueError(f"No customer with ID {customer_id}")
+
+            # Use a flag to detect changes
+            flag = False
+            # Update the new data
+            for key, value in new_data.items():
+                if value is not None:
+                    setattr(find_customer, key, value)
+                    flag = True
+
+            if not flag:
+                return None
+
+            # Commit the changes
+            self.session.commit()
+            return {obj.name: getattr(find_customer, obj.name) for obj in find_customer.__table__.columns}
+        except Exception as e:
+            # In case of any issue, rollback
+            self.session.rollback()
+            raise Exception(f"An error occurred while updating the customer: {str(e)}")
+        finally:
+            # Make sure to close the session:
+            self.session.close()
 
     # METHODS for employee
     def add_employee(self, employee_data):
