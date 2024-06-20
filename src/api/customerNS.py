@@ -1,7 +1,7 @@
 # Use Flask's request to access submitted data
-from flask import request, jsonify
+from flask import jsonify
 # Import abort to handel errors
-from flask_restx import Namespace, fields, Resource, abort, reqparse
+from flask_restx import Namespace, fields, Resource, reqparse
 
 # In order to generate my ID's:
 import uuid
@@ -32,10 +32,6 @@ customer_model = customer_ns.model('CustomerModel', {
 
 # Define the parser for the partial update of a customer
 parser = reqparse.RequestParser()
-# parser.add_argument('customer_name', type=str, required=False, help='The name of the customer')
-# parser.add_argument('customer_age', type=int, required=False, help='The age of the customer')
-# parser.add_argument('customer_gender', type=str, required=False, choices=['female', 'male', 'other', 'unspecified'],
-#                     help='The gender of the customer')
 parser.add_argument('customer_address', type=str, required=False, help='The address of the customer')
 parser.add_argument('balance', type=float, required=False, help='The balance of the customer')
 
@@ -93,18 +89,13 @@ class CustomerID(Resource):
             customer_ns.abort(404, str(e))
 
     @customer_ns.doc('Update a customer')
-    @customer_ns.expect(parser, vlidate=True)
+    @customer_ns.expect(parser, validate=True)
     @customer_ns.marshal_with(customer_model, envelope='customer')
     def post(self, customer_id):
         arguments = parser.parse_args()
         # Take only the new values from the arguments that are not None
         new_data = {key: value for key, value in arguments.items() if value is not None}
 
-        # # Check if the customer exists
-        # check_customer = agency.get_customer(customer_id)
-        # if not check_customer:
-        #     customer_ns.abort(404, f"No customer with ID {customer_id} found!")
-        #
         # Check if there are any updates
         if not new_data:
             customer_ns.abort(400, 'No updates')
@@ -122,8 +113,6 @@ class CustomerID(Resource):
     @customer_ns.doc(description='Delete a customer')
     def delete(self, customer_id):
         try:
-            # customer = agency.get_customer(customer_id)
-            # # If no customer with the given ID is found:
             agency.remove_customer(customer_id)
             return jsonify(f'Customer with ID {customer_id} was removed!')
         except Exception as e:
