@@ -27,16 +27,9 @@ employee_model = employee_ns.model('EmployeeModel', {
                            help='The salary of the employee')
 })
 
-# # Define the parser for the partial update of an employee
-# parser = reqparse.RequestParser()
-
-# # parser.add_argument('customer_name', type=str, required=False, help='The name of the customer')
-# # parser.add_argument('customer_age', type=int, required=False, help='The age of the customer')
-# # parser.add_argument('customer_gender', type=str, required=False, choices=['female', 'male', 'other', 'unspecified'],
-# #                     help='The gender of the customer')
-# parser.add_argument('customer_address', type=str, required=False, help='The address of the customer')
-# parser.add_argument('balance', type=float, required=False, help='The balance of the customer')
-
+# Define the parser for the salary update of an employee
+parser = reqparse.RequestParser()
+parser.add_argument('salary', type=float, required=True, help='The salary of the employee')
 
 @employee_ns.route('/')
 class EmployeeAPI(Resource):
@@ -91,40 +84,29 @@ class EmployeeID(Resource):
             employee_ns.abort(404, str(e))
 
     @employee_ns.doc('Update an employee')
-    # @employee_ns.expect(parser, validate=True)
+    @employee_ns.expect(parser, validate=True)
     @employee_ns.marshal_with(employee_model, envelope='employee')
     def post(self, employee_id):
-        # arguments = parser.parse_args()
-        # Take only the new values from the arguments that are not None
-        # new_data = {key: value for key, value in arguments.items() if value is not None}
+        arguments = parser.parse_args()
+        new_salary = arguments['salary']
 
-        # Check if the employee exists
-        check_employee = agency.get_employee(employee_id)
-        if not check_employee:
-            employee_ns.abort(404, f'No employee with ID {employee_id} found!')
-
-        # # Check if there are any updates
-        # if not new_data:
-        #     employee_ns.abort(400, 'No updates')
-
-#         # Check if there are any updates
-#         if not new_data:
-#             customer_ns.abort(400, 'No updates')
-#
-#         try:
-#             u_customer = agency.update_customer(customer_id, new_data)
-#             if not u_customer:
-#                 customer_ns.abort(400, "No updates")
-#             return u_customer
-#         except ValueError as e:
-#             customer_ns.abort(404, str(e))
-#         except Exception as e:
-#             customer_ns.abort(500, str(e))
+        try:
+            u_employee = agency.update_employee(employee_id, new_salary)
+            return u_employee
+        except ValueError as e:
+            # Two errors:
+            # when we cannot find the employee in the system
+            # when the new salary == old salary
+            if "employee" in str(e):
+                employee_ns.abort(404, str(e))
+            else:
+                employee_ns.abort(400, str(e))
+        except Exception as e:
+            employee_ns.abort(500, str(e))
 
     @employee_ns.doc(description='Delete an employee')
     def delete(self, employee_id):
         try:
-            employee = agency.get_employee(employee_id)
             agency.remove_employee(employee_id)
             return jsonify(f'Employee with ID {employee_id} was removed!')
         except Exception as e:

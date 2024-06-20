@@ -189,26 +189,21 @@ class Agency:
             # Close the session
             self.session.close()
 
-    def update_employee(self, employee_id, new_data):
+    def update_employee(self, employee_id, new_salary):
         try:
             find_employee = self.session.query(Employee_db).filter_by(employee_id=employee_id).first()
             if not find_employee:
-                raise ValueError(f"No employee with ID {employee_id}")
+                raise ValueError(f"No employee with ID {employee_id} found")
 
-            # Use a flag to detect changes
-            flag = False
-            # Update with the new data
-            for key, value in new_data.items():
-                if value is not None:
-                    setattr(find_employee, key, value)
-                    flag = True
+            # Check if the new salary is the same as the old salary
+            if new_salary == find_employee.salary:
+                raise ValueError("New salary is the same as the current salary")
 
-            if not flag:
-                return None
-
-            # Commit the changes
+            # Update the employee
+            find_employee.salary = new_salary
             self.session.commit()
-            return {obj.name: getattr(find_employee, obj.name) for obj in find_employee.__table__.columns}
+            return {col.name: getattr(find_employee, col.name) for col in find_employee.__table__.columns}
+
         except Exception as e:
             # In case of any issue, rollback
             self.session.rollback()
