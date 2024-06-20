@@ -136,7 +136,7 @@ class Agency:
             # Add the new_employee to the database
             self.session.add(new_employee)
             # Commit the changes
-            self.session.comit()
+            self.session.commit()
             # Convert SQLAlchemy object to a dictionary
             return {obj.name: getattr(new_employee, obj.name) for obj in new_employee.__table__.columns}
         except Exception as e:
@@ -163,7 +163,7 @@ class Agency:
     def all_employees(self):
         try:
             employees = self.session.query(Employee_db).all()
-            return [{obj.name: getattr(employee, obj.name) for obj in Customer_db.__table__.columns}
+            return [{obj.name: getattr(employee, obj.name) for obj in Employee_db.__table__.columns}
                     for employee in employees]
         except Exception as e:
             raise Exception(f"An error occurred while getting all the employees: {str(e)}")
