@@ -95,7 +95,7 @@ class Agency:
 
             # Use a flag to detect changes
             flag = False
-            # Update the new data
+            # Update with the new data
             for key, value in new_data.items():
                 if value is not None:
                     setattr(find_customer, key, value)
@@ -118,7 +118,14 @@ class Agency:
     # METHODS for employee
     def add_employee(self, employee_data):
         try:
-            # Assert that ID does not exist
+            # Ensure that gender is correctly written
+            valid_genders = {'female', 'male', 'other', 'unspecified'}
+            employee_gender = employee_data['employee_gender']
+            if employee_gender not in valid_genders:
+                raise ValueError(f"Invalid gender {employee_gender}. Try: {valid_genders}")
+
+            # Assert that ID does not exist using filter_by().first()
+            # which returns the first matched instance without loading other data
             existing_employee = self.session.query(Employee_db).filter_by(
                 employee_id=employee_data['employee_id']).first()
             if existing_employee:
@@ -168,6 +175,8 @@ class Agency:
         try:
             # Find the employee with the given ID
             r_employee = self.session.query(Employee_db).filter_by(employee_id=employee_id).first()
+            if not r_employee:
+                raise ValueError(f"No employee with ID {employee_id}")
 
             # If employee exists, remove it
             self.session.delete(r_employee)
@@ -180,3 +189,30 @@ class Agency:
             # Close the session
             self.session.close()
 
+    def update_employee(self, employee_id, new_data):
+        try:
+            find_employee = self.session.query(Employee_db).filter_by(employee_id=employee_id).first()
+            if not find_employee:
+                raise ValueError(f"No employee with ID {employee_id}")
+
+            # Use a flag to detect changes
+            flag = False
+            # Update with the new data
+            for key, value in new_data.items():
+                if value is not None:
+                    setattr(find_employee, key, value)
+                    flag = True
+
+            if not flag:
+                return None
+
+            # Commit the changes
+            self.session.commit()
+            return {obj.name: getattr(find_employee, obj.name) for obj in find_employee.__table__.columns}
+        except Exception as e:
+            # In case of any issue, rollback
+            self.session.rollback()
+            raise Exception(f"An error occurred while updating the employee: {str(e)}")
+        finally:
+            # Make sure to close the session
+            self.session.close()
