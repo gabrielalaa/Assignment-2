@@ -6,10 +6,10 @@ from .database import Session, Customer_db, Employee_db
 
 # Create a class to import all the methods easily
 class Agency:
-    def __init__(self):
+    def __init__(self, session=None):
         # Use the session to commit and access data
         # Create a new session instance:
-        self.session = Session()
+        self.session = session if session else Session()
 
     # First of all, I need to have customers and employees in my system
     # METHODS for customer
