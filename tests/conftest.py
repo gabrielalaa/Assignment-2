@@ -1,6 +1,6 @@
 import pytest
-from ..src.app import create_app
-from ..src.model.database import Base
+# from src.app import create_app
+from src.model.database import Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
