@@ -20,8 +20,8 @@ def create_app():
     # add individual namespaces
     # mcroute_api.add_namespace(menu_ns)
     # mcroute_api.add_namespace(order_ns)
-    mcroute_api.add_namespace(customer_ns)
-    mcroute_api.add_namespace(employee_ns)
+    mcroute_api.add_namespace(customer_ns, path="/customer")
+    mcroute_api.add_namespace(employee_ns, path="/employee")
 
     return mcroute_app
 
