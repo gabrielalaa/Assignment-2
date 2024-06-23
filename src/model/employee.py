@@ -5,9 +5,3 @@ class Employee(object):
         self.employee_age: int = employee_age
         self.employee_gender: str = employee_gender
         self.salary: float = salary
-
-# TODO:
-#  to work you should have the age of 16+ <= 50
-#  salary > 0
-#  maybe make a statistics based on age/gender/salary
-#  or some additional things about the salary

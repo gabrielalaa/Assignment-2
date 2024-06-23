@@ -7,7 +7,6 @@ class Menu(object):
         self.quantity: int = quantity
 
 # TODO:
-#  interactions between the employee and the menu: add, remove, update products
 #  interactions between the customer and the menu when ORDERING
 
 # TODO:
