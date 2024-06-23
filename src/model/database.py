@@ -5,21 +5,21 @@ from sqlalchemy.orm import sessionmaker, relationship
 Base = declarative_base()
 
 
-# # Define "Menu_db" using SQLAlchemy's ORM to map it to a database table
-# class Menu_db(Base):
-#     __tablename__ = 'products'
-#
-#     # As a primary key, use the ID
-#     product_id = Column(Integer, primary_key=True)
-#     name = Column(String)
-#     price = Column(Float)
-#     # I want to fix some simple categories to make the navigation as a user much easier and logical
-#     category = Column(Enum("Burgers", "Fries", "Salads", "Drinks", "Desserts", name="menu_categories"))
-#     quantity = Column(Integer)
-#
-#
-# #######################################
-#
+# Define "Menu_db" using SQLAlchemy's ORM to map it to a database table
+class Menu_db(Base):
+    __tablename__ = 'products'
+
+    # As a primary key, use the ID
+    product_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    price = Column(Float, nullable=False)
+    # I want to fix some simple categories to make the navigation as a user much easier and logical
+    category = Column(Enum("Burgers", "Fries", "Salads", "Drinks", "Desserts", name="menu_categories"), nullable=False)
+    quantity = Column(Integer, nullable=False)
+
+
+#######################################
+
 # # An order can contain multiple menu products
 # # Construct an association table:
 # order_menu_association = Table('order_menu', Base.metadata,
@@ -75,9 +75,8 @@ class Customer_db(Base):
 
 #######################################
 
-# Set up one engine to my SQLite database
+# Set the engine and sessionmaker accessible
 engine = create_engine('sqlite:///McSystem.db', echo=True)
-Base.metadata.create_all(engine)
 
 # Set up a session maker to handle transactions
 Session = sessionmaker(bind=engine)
