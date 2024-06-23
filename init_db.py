@@ -7,7 +7,7 @@ def initialize_database():
     # Set up one engine to my SQLite database
     engine = create_engine('sqlite:///McSystem.db', echo=True)
     Base.metadata.create_all(engine)
-    print(Base.metadata.tables)
+    # print(Base.metadata.tables)
 
     Session = sessionmaker(bind=engine)
     session = Session()

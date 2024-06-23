@@ -18,7 +18,7 @@ def create_app():
     mcroute_api = Api(mcroute_app, title="McDonalds: An app for both customers and employees")
 
     # add individual namespaces
-    # mcroute_api.add_namespace(menu_ns)
+    # mcroute_api.add_namespace(menu_ns, path="/menu")
     # mcroute_api.add_namespace(order_ns)
     mcroute_api.add_namespace(customer_ns, path="/customer")
     mcroute_api.add_namespace(employee_ns, path="/employee")
