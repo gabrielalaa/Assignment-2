@@ -31,6 +31,7 @@ employee_model = employee_ns.model('EmployeeModel', {
 parser = reqparse.RequestParser()
 parser.add_argument('salary', type=float, required=True, help='The salary of the employee')
 
+
 @employee_ns.route('/')
 class EmployeeAPI(Resource):
     @employee_ns.doc(description='Add a new employee')
