@@ -28,7 +28,9 @@ def get_menu():
     # Get the menu from the server
     response = send_request('get_menu')
     if response['status'] == 'success':
-        print("Menu:", response['menu_list'])
+        print("Menu:")
+        for index, item in enumerate(response['menu_list'], start=1):
+            print(f'{index}. {item["name"]} - Price: {item["price"]} $ - Category: {item["category"]} - Quantity: {item["quantity"]}')
     else:
         print("Error:", response['message'])
 

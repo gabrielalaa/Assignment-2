@@ -16,7 +16,7 @@ def client(client_socket):
         # Log in on the server side:
         print(f'Client connected.')
         # Send this message to the client:
-        client_socket.sendall(json.dumps({'status': 'connected', 'message': 'Welcome to the server!'}).encode('utf-8'))
+        client_socket.sendall(json.dumps({'status': 'connected', 'message': 'Hi!'}).encode('utf-8'))
         while True:
             # Get the request from the client
             request = client_socket.recv(1024).decode('utf-8')
