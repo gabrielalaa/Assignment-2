@@ -6,7 +6,7 @@ import json
 def send_request(action, data=None):
     # Send a request to the server and return the response as a dictionary
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(('localhost', 9000))
+    client.connect(('localhost', 9001))
 
     # Take the initial connection response
     initial_response = client.recv(1024).decode('utf-8')

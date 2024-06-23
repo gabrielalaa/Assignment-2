@@ -4,7 +4,7 @@ import threading
 import json
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from src.model.database import Menu_db
+from src.model.database import Menu_db, Customer_db, Order_db
 
 engine = create_engine('sqlite:///McSystem.db', echo=True)
 Session = sessionmaker(bind=engine)
@@ -47,9 +47,11 @@ def process_request(request):
             return delete_product(data)
         elif action == 'add_product':
             return add_product(data)
+        elif action == 'place_order':
+            return place_order(data)
         else:
             return json.dumps({'status': 'error', 'message': 'Invalid action! Please try: get_menu, update_menu, '
-                                                             'delete_product or add_product'})
+                                                             'delete_product, add_product or place_order'})
     except Exception as e:
         return json.dumps({'status': 'error', 'message': str(e)})
 
@@ -124,12 +126,66 @@ def add_product(data):
         session.close()
 
 
+def place_order(data):
+    # Order food as a customer
+    session = Session()
+    try:
+        # Get the customer first
+        customer = session.query(Customer_db).get(data['customer_id'])
+        # If the customer exists
+        if customer:
+            # Initialize the total cost of the order
+            total_cost = 0
+            for item in data['order']:
+                # If the item exists in the menu, get it
+                product = session.query(Menu_db).get(item['product_id'])
+                # Check the quantity
+                if product and product.quantity >= item['quantity']:
+                    # Calculate the total cost
+                    total_cost += product.price * item['quantity']
+                    product.quantity -= item['quantity']
+                else:
+                    return json.dumps({'status': 'error', 'message': 'Product not available or insufficient quantity, '
+                                                                     'we are sorry!'})
+
+            # Check the customer balance - a customer cannot place orders without having money
+            if customer.balance >= total_cost:
+                customer.balance -= total_cost
+                # Update the status of the order
+                order = Order_db(customer_id=customer.customer_id, order_status='preparing')
+                session.add(order)
+                session.commit()
+                response = json.dumps({'status': 'success', 'message': 'Order is being prepared!'})
+
+                # Simulate order preparation
+                import time
+                time.sleep(5)
+                order.order_status = 'completed'
+                session.commit()
+
+                for item in data['order']:
+                    menu_item = session.query(Menu_db).get(item['product_id'])
+                    order.menu_products.append(menu_item)
+                session.add(order)
+                session.commit()
+                return json.dumps({'status': 'success', 'message': 'Order delivered successfully. Enjoy your meal!'})
+            else:
+                return json.dumps({'status': 'error', 'message': 'Not enough money'})
+        else:
+            return json.dumps({'status': 'error', 'message': 'Customer not found'})
+    except Exception as e:
+        session.rollback()
+        return json.dumps({'status': 'error', 'message': str(e)})
+    finally:
+        session.close()
+
+
 def start_server():
     # Start the TCP server
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('localhost', 9000))
+    server.bind(('localhost', 9001))
     server.listen(5)
-    print('Server listening on port 9000')
+    print('Server listening on port 9001')
 
     while True:
         conn, addr = server.accept()
