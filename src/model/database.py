@@ -20,30 +20,30 @@ class Menu_db(Base):
 
 #######################################
 
-# # An order can contain multiple menu products
-# # Construct an association table:
-# order_menu_association = Table('order_menu', Base.metadata,
-#                                Column('order_id', Integer, ForeignKey('orders.order_id')),
-#                                Column('product_id', Integer, ForeignKey('products.product_id')))
-#
-#
-# # Define "Order_db" using SQLAlchemy's ORM to map it to a database table
-# class Order_db(Base):
-#     __tablename__ = 'orders'
-#
-#     order_id = Column(Integer, primary_key=True)
-#     order_status = Column(String, default='pending')
-#     # Use a foreign key to link two tables together
-#     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
-#
-#     # Create relationships to define how different tables are connected
-#     # back_populates is used to create a bidirectional relationship
-#     # secondary is used to define a many-to-many relationship
-#     customer = relationship("Customer_db", back_populates="orders")
-#     menu_products = relationship("Menu_db", secondary=order_menu_association, back_populates="orders")
-#
-#
-# #######################################
+# An order can contain multiple menu products
+# Construct an association table:
+order_menu_association = Table('order_menu', Base.metadata,
+                               Column('order_id', Integer, ForeignKey('orders.order_id')),
+                               Column('product_id', Integer, ForeignKey('products.product_id')))
+
+
+# Define "Order_db" using SQLAlchemy's ORM to map it to a database table
+class Order_db(Base):
+    __tablename__ = 'orders'
+
+    order_id = Column(Integer, primary_key=True)
+    order_status = Column(String, default='pending')
+    # Use a foreign key to link two tables together
+    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+
+    # Create relationships to define how different tables are connected
+    # back_populates is used to create a bidirectional relationship
+    # secondary is used to define a many-to-many relationship
+    customer = relationship("Customer_db", back_populates="orders")
+    menu_products = relationship("Menu_db", secondary=order_menu_association, back_populates="orders")
+
+
+#######################################
 
 # Define "Employee_db" using SQLAlchemy's ORM to map it to a database table
 class Employee_db(Base):
@@ -69,9 +69,11 @@ class Customer_db(Base):
     customer_address = Column(String, nullable=False)
     balance = Column(Float, nullable=False)
 
-    # # Relationship
-    # orders = relationship("Order_db", back_populates="customer")
+    # Relationship
+    orders = relationship("Order_db", back_populates="customer")
 
+
+Menu_db.orders = relationship("Order_db", secondary=order_menu_association, back_populates="menu_products")
 
 #######################################
 
