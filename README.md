@@ -37,7 +37,7 @@ The API consists of the following main functionality
 * Updates can be made over salary only.
 
 **Management of database**
-* I used SQLAlchemy because I found it much easier to implement because it is using classes and objects.
+* I used SQLAlchemy. I found it much easier to implement because it is using classes and objects.
 * I wanted to have some items in my `Menu_db` database, therefore I created another file called `init_db.py`. This initializes the database and adds elements in the menu. **This should be the first to be run, once!**
 * I created a `database.py` in `src.model` in which I defined Menu_db, Order_db, Customer_db and Employee_db. 
 * I set up the engine and a session maker to handle transaction.
@@ -135,4 +135,5 @@ Some of them are included in the `requirements.txt` file.
 
 I enjoyed doing this project. I am satisfied with the result I have. And I am sure that if I had focused more, I could have achieved everything I set out to do. 
 It was much more complex than I originally imagined. And I think using something else like django, it would have been much easier and faster to do.
-Project by Radulescu Carla Gabriela, group 2.
+
+__Project by Radulescu Carla Gabriela, group 2.__
