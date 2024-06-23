@@ -6,8 +6,3 @@ class Menu(object):
         self.category: str = category
         self.quantity: int = quantity
 
-# TODO:
-#  interactions between the customer and the menu when ORDERING
-
-# TODO:
-#  error handling for: price <= 0; quantity < 0

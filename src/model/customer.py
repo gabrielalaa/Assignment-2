@@ -13,9 +13,3 @@ class Customer(object):
         self.order_history: List[Order] = []
         self.balance: float = balance
 
-
-# TODO:
-#  statistics for age/gender
-#  offer recommendations based on the history
-#  make it have a valid age? 10 < < 100
-#  the order can be made only based on the balance that the customer has

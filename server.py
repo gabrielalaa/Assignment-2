@@ -155,7 +155,7 @@ def place_order(data):
                 order = Order_db(customer_id=customer.customer_id, order_status='preparing')
                 session.add(order)
                 session.commit()
-                response = json.dumps({'status': 'success', 'message': 'Order is being prepared!'})
+                # response = json.dumps({'status': 'success', 'message': 'Order is being prepared!'})
 
                 # Simulate order preparation
                 import time
