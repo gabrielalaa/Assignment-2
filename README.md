@@ -36,19 +36,26 @@ The API consists of the following main functionality
 
 **Management of database**
 * I used SQLAlchemy because I found it much easier to implement because it is using classes and objects.
-* Because I wanted to have some items in my `Menu_db` database, I created another file called `init_db`. This initializes the database and adds elements in the menu. **This should be the first to be run, once!**
-* I created a `database` python file in `src.model` in which I defined Menu_db, Order_db, Customer_db and Employee_db.
+* Because I wanted to have some items in my `Menu_db` database, I created another file called `init_db.py`. This initializes the database and adds elements in the menu. **This should be the first to be run, once!**
+* I created a `database.py` in `src.model` in which I defined Menu_db, Order_db, Customer_db and Employee_db.
 * I set up the engine and a session maker to handle transaction.
-* The database is created in my root of the project. I won't import it. It will be created automatically after running `init_db`. Customers and employees databases will be modified when using the application on the browser.
+* The database is created in my root of the project. I won't import it. It will be created automatically after running `init_db.py`. Customers and employees databases will be modified when using the application on the browser.
 
 **Testing**
-* I created tests using `pytest` for my `agency` file which is found in `src.model`
+* I created tests using `pytest` for my `agency.py` file which is found in `src.model`
 * I used an in-memory database because I didn't want to affect the actual database of my project.
 * I was not able to create tests for `customerNS` and `employeeNS`. I couldn't figure it out why my database was affected even if I specified an in-memory one. In addition, some tests were failing even if there have been noticeable changes in my database.
 
+**Networking**
+* Unfortunately, it is visible just in python. I tried to keep it in `src` in a folder I created called `network`. But I had several errors in which the menu database seemed not to exist, that it could not be accessed and many others.
+* It can be found in the root of the project. 
+* There is one server called `server.py` 
+* One client for employees called `employee_client.py`
+* TIP: If you want to see the database (if it is not visible in `McSystem.db`) go to `verify.py` file and this will return what `Menu_db` contains.
+
 **Important note**
-To make unique ID's I used the uuid module. 
-I preferred to make it shorter only of 8 digits, adding a (different) prefix for each. 
+* To make unique ID's I used the uuid module. I preferred to make it shorter only of 8 digits, adding a (different) prefix for each. 
+* The part related to networking was the hardest. I haven't been able to do it the way I wanted: to be able to see it when you start the app and interact right there. I tried socketio but it was difficult. And using a simple TCP socket was too complex.
 
 ---
 
@@ -104,13 +111,14 @@ Using the command `pip list`:
 * wheel                     0.41.2
 
 **Important Note**
-Some of them are included in the `requirements` txt file.
+Some of them are included in the `requirements.txt` file.
 
 ---
 
 ## How to use the project ?
 * Clone it into your device.
-* Set up your environment (python version 3.9 or 3.10) and download the packages that I have specified in `requirements`. 
-* First, run `init_db` once to initialize the database. From my experience, I was not able to see that `Menu_db` was successfully created, so I wrote a short code in `verify` to check if everything works well.
-* Then, navigate to `start` and run it. The application will be available on the browser. There you can handle customers and employees actions (add/get/update/remove).
+* Set up your environment (python version 3.9 or 3.10) and download the packages that I have specified in `requirements.txt`. 
+* First, run `init_db.py` once to initialize the database. From my experience, I was not able to see that `Menu_db` was successfully created, so I wrote a short code in `verify.py` to check if everything works well.
+* Then, navigate to `start.py` and run it. The application will be available on the browser. There you can handle customers and employees actions (add/get/update/remove).
+* If you want to communicate with the server to access the menu as an employee, go in the root of the project and run `server.py` and `employee_client.py`. Instructions will be provided there.  
 * If you want to check my project, I have created some tests in `tests` folder. Just type in `pytest` in the terminal.
