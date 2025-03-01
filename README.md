@@ -1,5 +1,5 @@
 # Assignment 2 - McDonald's System
-## Deadline: 23.06.2024, 23:00
+## The deadline was: 23.06.2024, 23:00
 
 ---
 
@@ -7,13 +7,14 @@
 ### Welcome to the McDonald's System Project
 This project is about building a system for McDonald's that helps employees and customers interact more effectively.
 Employees can change the menu as needed, and customers can place their orders through a simple interface.
+You can find more information about this project and how I planned it in the document **Proposal For Second Project**.
 
 ### What does the system do?
 * Add, get, update and remove employees which are stored in a database.
 * Add, get, update, and remove customers which are stored in a database.
 
 ### Behind the Scenes
-* I used an existing layout like we did for the previous project
+* I used an existing layout like we did for the previous project (Assignment-1)
 * I set up an API that lets the front-end of the application communicate with the database
 * I tested the system (the agency which contains my methods) using `pytest` to make sure some of the things work as I expected
 * I created a connection between clients and menu using a basic socket. They can place orders. After each order, all the changes will appear in databases.
@@ -136,4 +137,4 @@ Some of them are included in the `requirements.txt` file.
 I enjoyed doing this project. I am satisfied with the result I have. And I am sure that if I had focused more, I could have achieved everything I set out to do. 
 It was much more complex than I originally imagined. And I think using something else like django, it would have been much easier and faster to do.
 
-__Project by Radulescu Carla Gabriela, group 2.__
+__Project by Radulescu Carla Gabriela under the guidance of Prof. (FH). Dipl.-Ing. Dr. techn. Deepak Dhungana.__
